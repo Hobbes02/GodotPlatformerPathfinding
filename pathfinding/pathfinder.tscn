@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://cq75golhbokul"]
+
+[ext_resource type="Script" path="res://world/pathfinding/pathfinder.gd" id="1_yuj4y"]
+[ext_resource type="Texture2D" uid="uid://cqmkggx80gns4" path="res://visuals/interaction/bubble.png" id="2_fy3k5"]
+
+[node name="Pathfinder" type="Node2D"]
+z_index = 256
+texture_filter = 1
+script = ExtResource("1_yuj4y")
+
+[node name="Reference" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0.372549, 0.423529, 1, 1)
+position = Vector2(0, 7.5)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_fy3k5")
+
+[node name="Line2D" type="Line2D" parent="."]
+visible = false
+width = 1.0
+default_color = Color(0.247059, 0.894118, 1, 1)
