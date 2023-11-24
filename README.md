@@ -56,7 +56,8 @@ bool show_path = false
 if true, the path will be drawn as a series of points and lines after calling find_path()
 
 Array[Dictionary] graphs = []
-an Array storing data for every A* graph created. Meant for internal use
+an Array storing data for every A* graph created
+to access the actual graph created by the initialize() function, use Pathfinder.graphs[graph_id]
 ```
 ### methods
 ```
@@ -66,6 +67,13 @@ returns the ID of your graph, to be used in find_path()
 
 Array[PathfindTarget] find_path(graph_id: int, from: Vector2, to: Vector2)
 finds and returns a path of PathfindTargets from a start point to an end.
+
+AStar2D generate_points(AStar2D graph, TileMap tilemap, int layer, PathfindEntityStats stats)
+takes an AStar2D graph and adds points to it following a simple algorithm.
+returns the modified graph
+
+AStar2D connect_points(AStar2D graph, TileMap tilemap, int layer, PathfindEntityStats stats)
+takes a AStar2D graph and connects the points on it, returning the modified graph
 ```
 
 ## PathfindEntityStats
