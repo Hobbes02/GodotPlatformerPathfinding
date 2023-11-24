@@ -29,6 +29,9 @@ var path = Pathfinder.find_path(id, start, end)
 `path` will be set to an Array of `PathfindTarget`s. Check the reference to find out how to use them.
 
 ### Creating an Agent
+
+> Disclaimer: The Agent movement isn't very clean right now, and requires a lot of tweaking settings and seeing what happens. I'm working on a better path following algorithms, but until then, it needs a lot more work modifying settings to get it smoothed out.
+
 After the path's been created, you'll want something to follow it. For this you can set up an Agent.
 Create an Agent like this:
 ```
