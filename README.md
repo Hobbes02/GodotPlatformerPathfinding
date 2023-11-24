@@ -21,12 +21,29 @@ var id = Pathfinder.initialize(tilemap, layer, stats)
 with tilemap being your tilemap, and layer being the integer value for the tilemap layer you want the pathfinding system to avoid.
 `id` will be an integer representing the id of the graph you've initialized. Make sure to store this value for later.
 
-## Getting a Path
+### Getting a Path
 Now that you've initialized the addon, you can get the path between two points. Do this by calling
 ```
 var path = Pathfinder.find_path(id, start, end)
 ```
 `path` will be set to an Array of `PathfindTarget`s. Check the reference to find out how to use them.
+
+### Creating an Agent
+After the path's been created, you'll want something to follow it. For this you can set up an Agent.
+Create an Agent like this:
+```
+var agent = Pathfinder.Agent.new(speed, gravity, jump_velocity, margin)
+```
+`margin` is how many pixels from the point the Agent's trying to reach it has to be to consider itself there. A larger margin means the Agent will be less accurate, but can cause it to overshoot the target.
+
+### Following a Path
+To make an Agent follow a path, call its `follow_path` method with the only argument being the path to follow.
+Then, in the `CharacterBody2D` that you want to move, use the `compute_velocity` method, like this:
+```
+func _physics_process(delta: float) -> void:
+    velocity = computer.compute_velocity(velocity, global_position, is_on_floor(), delta)
+    move_and_slide()
+```
 
 # Reference
 ## Pathfinder
@@ -58,15 +75,15 @@ int jump_height = 3
 default jump height value in tilemap tiles
 
 int jump_distance = 6
-the distance your charater can jump straight-on (in tilemap tiles)
+the distance the agent can jump in a straight line (in tilemap tiles)
 
 int height = 2
-the height of your character (in tilemap tiles)
+the height of the agent (in tilemap tiles)
 
 ```
 
 ## PathfindTarget
-## properties
+### properties
 ```
 const int TYPE_WALK = 0
 movement type for walking to a point
@@ -82,4 +99,45 @@ the direction from the previous point to this one (-1 for left, 1 for right)
 
 Vector2 position = (0, 0)
 the position of this point
+```
+
+## Agent
+### properties
+```
+int speed
+the speed the agent moves at
+
+int jump_velocity
+the velocity applied to the agent when jumping
+because of how the velocity is applied, this value should always be negative
+
+int gravity
+the gravity applied to the agent
+
+int margin
+how close the agent can be to a point to consider it there (in pixels)
+
+Callable finished_callback
+an optional callable, called when the agent reaches its destination
+
+int current_point
+used internally to keep track of the position along the path
+
+Array[PathfindTarget] path
+used internally to keep track of the path
+```
+
+### methods
+```
+Vector2 compute_velocity(Vector2 velocity, Vector2 position, bool is_on_floor, float delta_time)
+used to find the velocity of an agent while following a path.
+for the velocity, provide the built-in velocity property of any CharacterBody2D
+for the position, provide global_position
+for is_on_floor, call the CharacterBody2D method of the same name and provide the result
+and for delta_time, use the delta argument to the _physics_process() function
+
+
+void follow_path(Array[PathfindTarget] path)
+sets the path for the agent to follow
+use Pathfinder.find_path to get the path to follow
 ```
